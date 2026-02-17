@@ -1,10 +1,10 @@
-import { Heart } from 'lucide-react';
-import FallingHearts from '@/components/FallingHearts';
-import DatingCard from '@/components/DatingCard';
-import ReturnCard from '@/components/ReturnCard';
-import ReturnProgress from '@/components/ReturnProgress';
-import AnniversaryList from '@/components/AnniversaryList';
-import { getTodayKST, formatDateKR } from '@/lib/dateUtils';
+import { Heart } from "lucide-react";
+import FallingHearts from "@/components/FallingHearts";
+import DatingCard from "@/components/DatingCard";
+import ReturnCard from "@/components/ReturnCard";
+import ReturnProgress from "@/components/ReturnProgress";
+import AnniversaryList from "@/components/AnniversaryList";
+import { getTodayKST, formatDateKR } from "@/lib/dateUtils";
 
 const Index = () => {
   const today = formatDateKR(getTodayKST());
@@ -16,10 +16,8 @@ const Index = () => {
       <header className="mb-8 text-center">
         <div className="mb-2 flex items-center justify-center gap-2">
           <Heart className="h-6 w-6 fill-primary text-primary animate-float-heart" />
-          <h1 className="text-4xl font-bold text-primary md:text-5xl">
-            우리 D-day
-          </h1>
-          <Heart className="h-6 w-6 fill-primary text-primary animate-float-heart" style={{ animationDelay: '0.5s' }} />
+          <h1 className="text-4xl font-bold text-primary md:text-5xl">지연 ♡ 현택</h1>
+          <Heart className="h-6 w-6 fill-primary text-primary animate-float-heart" style={{ animationDelay: "0.5s" }} />
         </div>
         <p className="text-muted-foreground">Since 2025.01.19</p>
       </header>
@@ -42,9 +40,7 @@ const Index = () => {
         </div>
 
         {/* 오늘 날짜 */}
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          오늘 {today} 기준
-        </p>
+        <p className="mt-6 text-center text-xs text-muted-foreground">오늘 {today} 기준</p>
       </div>
     </div>
   );

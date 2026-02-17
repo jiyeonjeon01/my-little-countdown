@@ -1,4 +1,5 @@
 import { Heart } from 'lucide-react';
+import FallingHearts from '@/components/FallingHearts';
 import DatingCard from '@/components/DatingCard';
 import ReturnCard from '@/components/ReturnCard';
 import ReturnProgress from '@/components/ReturnProgress';
@@ -9,7 +10,8 @@ const Index = () => {
   const today = formatDateKR(getTodayKST());
 
   return (
-    <div className="min-h-screen bg-background px-4 py-8 md:py-12">
+    <div className="relative min-h-screen bg-background px-4 py-8 md:py-12">
+      <FallingHearts />
       {/* 상단 타이틀 */}
       <header className="mb-8 text-center">
         <div className="mb-2 flex items-center justify-center gap-2">

@@ -121,6 +121,27 @@
   50% { transform: translateY(-8px) rotate(5deg); }
 }
 
+@keyframes falling-heart {
+  0% {
+    transform: translateY(-10%) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-falling-heart {
+  animation: falling-heart linear infinite;
+}
+
 @keyframes pulse-soft {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.05); opacity: 0.9; }

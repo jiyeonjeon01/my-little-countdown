@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react';
 import DatingCard from '@/components/DatingCard';
 import ReturnCard from '@/components/ReturnCard';
+import ReturnProgress from '@/components/ReturnProgress';
 import AnniversaryList from '@/components/AnniversaryList';
 import { getTodayKST, formatDateKR } from '@/lib/dateUtils';
 
@@ -26,6 +27,11 @@ const Index = () => {
         <div className="grid gap-6 md:grid-cols-2">
           <DatingCard />
           <ReturnCard />
+        </div>
+
+        {/* 파병 진행률 */}
+        <div className="mt-6">
+          <ReturnProgress />
         </div>
 
         {/* 기념일 리스트 */}

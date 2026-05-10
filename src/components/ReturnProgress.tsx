@@ -1,66 +1,84 @@
-import { Shield, Flag } from 'lucide-react';
-import { getTodayKST } from '@/lib/dateUtils';
+import { useState, useEffect } from 'react';
+import { calcReturnDays } from '@/lib/dateUtils';
 
 const DEPLOY_DATE = '2025-11-18';
 const RETURN_DATE = '2026-07-14';
 
 const ReturnProgress = () => {
-  const today = getTodayKST();
-  const start = new Date(DEPLOY_DATE + 'T00:00:00');
-  const end = new Date(RETURN_DATE + 'T00:00:00');
+  const [percent, setPercent] = useState(0);
+  const [elapsedDays, setElapsedDays] = useState(0);
+  const [totalDays, setTotalDays] = useState(0);
+  const [remainingDays, setRemainingDays] = useState(0);
 
-  const totalMs = end.getTime() - start.getTime();
-  const elapsedMs = today.getTime() - start.getTime();
+  useEffect(() => {
+    const start = new Date(DEPLOY_DATE + 'T00:00:00');
+    const end = new Date(RETURN_DATE + 'T00:00:00');
+    const totalMs = end.getTime() - start.getTime();
 
-  const totalDays = Math.round(totalMs / (1000 * 60 * 60 * 24));
-  const elapsedDays = Math.max(0, Math.min(totalDays, Math.round(elapsedMs / (1000 * 60 * 60 * 24))));
-  const percent = Math.max(0, Math.min(100, Math.round((elapsedDays / totalDays) * 100)));
+    // Day counts are static or change daily, can be calculated once or updated less frequently
+    const tDays = Math.round(totalMs / (1000 * 60 * 60 * 24)) + 1;
+    setTotalDays(tDays);
+
+    const update = () => {
+      const now = new Date();
+      const elapsedMs = now.getTime() - start.getTime();
+      const currentPercent = Math.max(0, Math.min(100, (elapsedMs / totalMs) * 100));
+
+      setPercent(currentPercent);
+
+      const rDays = calcReturnDays(RETURN_DATE);
+      setRemainingDays(rDays);
+      setElapsedDays(tDays - rDays);
+
+      requestAnimationFrame(update);
+    };
+
+    const animId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animId);
+  }, []);
 
   return (
-    <div className="rounded-lg bg-card p-5 shadow-md camo-subtle overflow-hidden relative">
-      {/* 군번줄 테두리 */}
-      <div className="absolute inset-0 rounded-lg border-2 border-olive/15 pointer-events-none" />
+    <div className="rounded-lg bg-card p-5 shadow-md bg-white/50 overflow-hidden relative border border-pink-100">
+      {/* 부드러운 하트 배경 느낌의 테두리 */}
+      <div className="absolute inset-0 rounded-lg border-2 border-pink-50 pointer-events-none" />
 
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Shield className="h-4 w-4 text-secondary" />
-          <h3 className="text-lg font-bold text-foreground">파병 진행률</h3>
+          <h3 className="text-lg font-bold text-foreground">파병 힘내자!</h3>
         </div>
-        <span className="dog-tag rounded-full px-2.5 py-0.5 text-xs font-bold text-olive-dark">
-          {percent}%
+        <span className="rounded-full bg-pink-100 px-3 py-1 text-[10px] sm:text-xs font-bold text-pink-500 shadow-sm border border-pink-200 animate-pulse-soft font-mono">
+          {percent.toFixed(6)}%
         </span>
       </div>
 
       {/* 프로그레스 바 */}
-      <div className="relative h-5 w-full overflow-hidden rounded-full bg-olive-light border border-olive/20">
+      <div className="relative h-6 w-full overflow-hidden rounded-full bg-pink-100/50 border border-pink-200">
         <div
-          className="h-full rounded-full transition-all duration-1000 ease-out"
+          className="h-full rounded-full transition-all duration-300 ease-linear"
           style={{
             width: `${percent}%`,
-            background: 'linear-gradient(90deg, hsl(90 25% 45%), hsl(90 30% 35%))',
+            background: 'linear-gradient(90deg, #ffb6c1, #ff69b4)',
           }}
         />
-        {/* 진행 위치 마커 */}
-        {percent > 0 && percent < 100 && (
-          <div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
-            style={{ left: `${percent}%` }}
-          >
-            <div className="h-3 w-3 rounded-full bg-primary border-2 border-card shadow-sm animate-pulse" />
-          </div>
-        )}
+        {/* 진행 위치 마커 (하트) */}
+        <div
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-300 ease-linear flex flex-col items-center"
+          style={{ left: `${percent}%` }}
+        >
+          <span className="text-sm animate-pulse" style={{ animationDuration: '1.5s' }}>
+            ❤️
+          </span>
+        </div>
       </div>
 
       {/* 라벨 */}
-      <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+      <div className="mt-2 flex items-center justify-between text-[10px] sm:text-[11px] text-pink-400 font-medium">
         <div className="flex items-center gap-1">
-          <Flag className="h-3 w-3" />
           <span>{DEPLOY_DATE.replace(/-/g, '.')}</span>
         </div>
-        <span>{elapsedDays}일 / {totalDays}일</span>
+        <span className="text-pink-500 font-bold whitespace-nowrap">{elapsedDays}일 / {totalDays}일 ({remainingDays}일 남음)</span>
         <div className="flex items-center gap-1">
           <span>{RETURN_DATE.replace(/-/g, '.')}</span>
-          <Flag className="h-3 w-3" />
         </div>
       </div>
     </div>

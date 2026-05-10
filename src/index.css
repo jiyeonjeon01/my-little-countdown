@@ -11,6 +11,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .text-primary-muted {
+    color: hsl(var(--primary-muted));
+  }
+
+  .text-primary-light {
+    color: hsl(340 100% 98%);
+  }
+}
+
 @layer base {
   :root {
     --background: 20 50% 97%;
@@ -23,6 +33,7 @@
     --popover-foreground: 340 30% 20%;
 
     --primary: 340 60% 65%;
+    --primary-muted: 340 30% 90%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 90 20% 40%;
@@ -56,6 +67,16 @@
     --dog-tag-shine: 40 10% 85%;
     --lace: 340 20% 95%;
 
+    /* Sky Blue tokens */
+    --sky-soft: 200 60% 95%;
+    --sky-medium: 200 50% 85%;
+    --sky-deep: 200 60% 65%;
+
+    /* Yellow tokens */
+    --yellow-soft: 45 100% 95%;
+    --yellow-medium: 45 100% 85%;
+    --yellow-deep: 45 90% 60%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -77,7 +98,9 @@
     font-family: 'Gowun Dodum', sans-serif;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: 'OmuDaye', 'Gaegu', cursive;
   }
 }
@@ -93,10 +116,8 @@
   inset: -4px;
   border: 3px solid hsl(var(--pink-medium) / 0.3);
   border-radius: calc(var(--radius) + 4px);
-  background: repeating-conic-gradient(
-    hsl(var(--pink-soft)) 0% 25%,
-    transparent 0% 50%
-  ) 0 0 / 12px 12px;
+  background: repeating-conic-gradient(hsl(var(--pink-soft)) 0% 25%,
+      transparent 0% 50%) 0 0 / 12px 12px;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
@@ -105,53 +126,429 @@
   opacity: 0.5;
 }
 
+/* Custom Heart Cursor Animation */
+.cursor-heart-trail {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  z-index: 9999;
+  font-size: 14px;
+  line-height: 1;
+  animation: cursor-fade-out 0.8s ease-out forwards;
+}
+
+@keyframes cursor-fade-out {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.5) translate(-50%, -200%);
+    opacity: 0;
+  }
+}
+
+/* Interactive Card Glow */
+.interactive-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.interactive-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(255, 122, 163, 0.15);
+  border-color: rgba(255, 122, 163, 0.3);
+}
+
+/* Subtle dot pattern */
+.bg-dots {
+  background-color: hsl(var(--background));
+  background-image: radial-gradient(hsl(var(--primary) / 0.1) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Top lace decoration */
+.lace-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background-color: white;
+  z-index: 50;
+  mask-image: radial-gradient(circle at 12px 24px, transparent 12px, #fff 12.5px);
+  mask-size: 24px 24px;
+  mask-repeat: repeat-x;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+}
+
 /* Military camo pattern (subtle) */
 .camo-subtle {
-  background-image: 
+  background-image:
     radial-gradient(ellipse 20px 15px at 20% 30%, hsl(var(--olive) / 0.08) 50%, transparent 50%),
     radial-gradient(ellipse 25px 18px at 70% 60%, hsl(var(--olive) / 0.06) 50%, transparent 50%),
     radial-gradient(ellipse 18px 22px at 45% 80%, hsl(var(--olive) / 0.05) 50%, transparent 50%);
+}
+
+/* Cute Military Camo Pattern */
+.camo-cute {
+  background-color: #f3f5ed;
+  /* Very light olive/cream */
+  background-image:
+    radial-gradient(circle at 20% 40%, rgba(133, 151, 100, 0.15) 15%, transparent 15%),
+    radial-gradient(circle at 70% 30%, rgba(107, 122, 80, 0.12) 20%, transparent 20%),
+    radial-gradient(circle at 40% 80%, rgba(133, 151, 100, 0.1) 18%, transparent 18%),
+    radial-gradient(circle at 80% 85%, rgba(107, 122, 80, 0.08) 12%, transparent 12%);
+  background-size: 150px 150px;
+}
+
+/* Military Ribbon Banner Style */
+.ribbon-banner {
+  position: relative;
+  background: hsl(var(--secondary));
+  color: white;
+  padding: 0.25rem 1.5rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ribbon-banner::before,
+.ribbon-banner::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.ribbon-banner::before {
+  left: -10px;
+  border-width: 15px 10px 15px 0;
+  border-color: transparent hsl(var(--secondary)) transparent transparent;
+  filter: brightness(0.8);
+  z-index: -1;
+}
+
+.ribbon-banner::after {
+  right: -10px;
+  border-width: 15px 0 15px 10px;
+  border-color: transparent transparent transparent hsl(var(--secondary));
+  filter: brightness(0.8);
+  z-index: -1;
 }
 
 /* Dog tag style */
 .dog-tag {
   background: linear-gradient(145deg, hsl(var(--dog-tag-shine)), hsl(var(--dog-tag)));
   border: 2px solid hsl(var(--dog-tag) / 0.6);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 2px hsl(0 0% 100% / 0.4),
     0 2px 6px hsl(var(--olive-dark) / 0.15);
 }
 
 /* Floating hearts animation */
 @keyframes float-heart {
-  0%, 100% { transform: translateY(0) rotate(-5deg); }
-  50% { transform: translateY(-8px) rotate(5deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(5deg);
+  }
 }
 
 @keyframes falling-heart {
   0% {
-    transform: translateY(-10%) rotate(0deg);
+    transform: translateY(-20px) rotate(0deg);
     opacity: 0;
   }
-  10% {
+
+  5% {
+    opacity: 0;
+  }
+
+  15% {
     opacity: 1;
   }
+
   90% {
     opacity: 1;
   }
+
   100% {
     transform: translateY(110vh) rotate(360deg);
     opacity: 0;
   }
 }
 
+/* Soft Pink Heart Dots Pattern */
+.bg-love-dots {
+  background-color: #fffafb;
+  background-image: radial-gradient(hsl(var(--primary) / 0.15) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+
+/* Sky Blue Dots Pattern */
+.bg-sky-dots {
+  background-color: #f7fbff;
+  background-image: radial-gradient(hsl(var(--sky-deep) / 0.15) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+
+/* Yellow Dots Pattern */
+.bg-yellow-dots {
+  background-color: #fffdf5;
+  background-image: radial-gradient(hsl(var(--yellow-deep) / 0.15) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+
+/* Pink Ribbon Banner */
+.pink-ribbon {
+  position: relative;
+  background: hsl(var(--primary));
+  color: white;
+  padding: 0.25rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(var(--primary) / 0.2);
+}
+
+.pink-ribbon::before,
+.pink-ribbon::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.pink-ribbon::before {
+  left: -12px;
+  border-width: 15px 12px 15px 0;
+  border-color: transparent hsl(var(--primary)) transparent transparent;
+  filter: brightness(0.9);
+  z-index: -1;
+}
+
+.pink-ribbon::after {
+  right: -12px;
+  border-width: 15px 0 15px 12px;
+  border-color: transparent transparent transparent hsl(var(--primary));
+  filter: brightness(0.9);
+  z-index: -1;
+}
+
+/* Sky Blue Ribbon Banner */
+.sky-ribbon {
+  position: relative;
+  background: hsl(var(--sky-deep));
+  color: white;
+  padding: 0.25rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(var(--sky-deep) / 0.2);
+}
+
+.sky-ribbon::before,
+.sky-ribbon::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.sky-ribbon::before {
+  left: -12px;
+  border-width: 15px 12px 15px 0;
+  border-color: transparent hsl(var(--sky-deep)) transparent transparent;
+  filter: brightness(0.9);
+  z-index: -1;
+}
+
+.sky-ribbon::after {
+  right: -12px;
+  border-width: 15px 0 15px 12px;
+  border-color: transparent transparent transparent hsl(var(--sky-deep));
+  filter: brightness(0.9);
+  z-index: -1;
+}
+
+/* Yellow Ribbon Banner */
+.yellow-ribbon {
+  position: relative;
+  background: hsl(var(--yellow-deep));
+  color: white;
+  padding: 0.25rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(var(--yellow-deep) / 0.2);
+}
+
+.yellow-ribbon::before,
+.yellow-ribbon::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.yellow-ribbon::before {
+  left: -12px;
+  border-width: 15px 12px 15px 0;
+  border-color: transparent hsl(var(--yellow-deep)) transparent transparent;
+  filter: brightness(0.9);
+  z-index: -1;
+}
+
+.yellow-ribbon::after {
+  right: -12px;
+  border-width: 15px 0 15px 12px;
+  border-color: transparent transparent transparent hsl(var(--yellow-deep));
+  filter: brightness(0.9);
+  z-index: -1;
+}
+
+/* Masking Tape Decoration */
+.tape-decoration {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 100px;
+  height: 28px;
+  background-color: hsla(var(--primary) / 0.2);
+  border-left: 2px dashed hsla(var(--primary) / 0.3);
+  border-right: 2px dashed hsla(var(--primary) / 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tape-decoration-olive {
+  background-color: hsla(var(--secondary) / 0.2);
+  border-left: 2px dashed hsla(var(--secondary) / 0.3);
+  border-right: 2px dashed hsla(var(--secondary) / 0.3);
+}
+
+.tape-decoration-sky {
+  background-color: hsla(var(--sky-deep) / 0.15);
+  border-left: 2px dashed hsla(var(--sky-deep) / 0.25);
+  border-right: 2px dashed hsla(var(--sky-deep) / 0.25);
+}
+
+.tape-decoration-yellow {
+  background-color: hsla(var(--yellow-deep) / 0.2);
+  border-left: 2px dashed hsla(var(--yellow-deep) / 0.3);
+  border-right: 2px dashed hsla(var(--yellow-deep) / 0.3);
+}
+
+/* Post-it Note Style */
+.post-it {
+  background: white;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  position: relative;
+  transition: transform 0.2s ease-in-out;
+}
+
+.post-it:nth-child(even) {
+  transform: rotate(1deg);
+}
+
+.post-it:nth-child(odd) {
+  transform: rotate(-1deg);
+}
+
+.post-it:hover {
+  transform: scale(1.02) rotate(0deg);
+  z-index: 10;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heartbeat Animation */
+@keyframes heartbeat-slow {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+.animate-heartbeat-slow {
+  animation: heartbeat-slow 3s ease-in-out infinite;
+}
+
+/* Improved Heart Pop Animation */
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  40% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-heart-pop {
+  animation: heart-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* More Dramatic Spark Animation */
+@keyframes spark {
+  0% {
+    transform: translate(0, 0) scale(1.5);
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-spark {
+  animation: spark 0.7s cubic-bezier(0.1, 0.8, 0.4, 1) forwards;
+}
+
 .animate-falling-heart {
-  animation: falling-heart linear infinite;
+  animation: falling-heart linear infinite both;
 }
 
 @keyframes pulse-soft {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.9; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
 }
 
 .animate-float-heart {
